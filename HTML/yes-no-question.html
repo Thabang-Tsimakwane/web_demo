@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Question</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #25211f;
+      --muted: #655f5a;
+      --paper: #fffaf0;
+      --accent: #e14f62;
+      --accent-dark: #b73749;
+      --blue: #2d6cdf;
+      --blue-dark: #184fb0;
+      --shadow: 0 18px 45px rgba(37, 33, 31, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(184, 2, 172, 0.18), rgba(45, 108, 223, 0.16)),
+        #f8f3ea;
+      overflow: hidden;
+    }
+
+    .wrap {
+      width: min(92vw, 540px);
+      padding: 24px;
+    }
+
+    .question-card {
+      position: relative;
+      min-height: 420px;
+      display: grid;
+      align-content: center;
+      gap: 28px;
+      padding: clamp(28px, 7vw, 52px);
+      text-align: center;
+      background: var(--paper);
+      border: 2px solid rgba(37, 33, 31, 0.08);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .stamp {
+      width: 86px;
+      height: 86px;
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+      border: 3px solid rgba(225, 79, 98, 0.35);
+      border-radius: 50%;
+      background: #ffffff;
+      color: var(--accent);
+      font-size: 30px;
+      line-height: 1;
+      transform: rotate(-8deg);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(0.5rem, 5vw, 3.6rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      line-height: 1.5;
+    }
+
+    .actions {
+      position: relative;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      min-width: 132px;
+      height: 52px;
+      border: 0;
+      border-radius: 8px;
+      color: #b9049d;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    button:hover,
+    button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(37, 33, 31, 0.18);
+      outline: none;
+    }
+
+    #yesBtn {
+      background: var(--accent);
+    }
+
+    #yesBtn:hover,
+    #yesBtn:focus-visible {
+      background: var(--accent-dark);
+    }
+
+    #noBtn {
+      background: var(--blue);
+    }
+
+    #noBtn:hover,
+    #noBtn:focus-visible {
+      background: var(--blue-dark);
+    }
+
+    .answer {
+      min-height: 34px;
+      color: var(--accent-dark);
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    @media (max-width: 430px) {
+      .question-card {
+        min-height: 460px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="question-card" aria-labelledby="questionTitle">
+      <div class="stamp" aria-hidden="true">?</div>
+      <div>
+        <h1 id="questionTitle">Will you be my Girlfriend</h1>
+        <p>Pick one answer. No pressure, but yes has excellent taste.</p>
+      </div>
+      <div class="actions">
+        <button id="yesBtn" type="button">Yes</button>
+        <button id="noBtn" type="button">No</button>
+      </div>
+      <div class="answer" id="answer" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    const yesBtn = document.querySelector("#yesBtn");
+    const noBtn = document.querySelector("#noBtn");
+    const answer = document.querySelector("#answer");
+
+    yesBtn.addEventListener("click", () => {
+      answer.textContent = "Perfect. That is the correct answer.";
+      noBtn.style.position = "static";
+    });
+
+    noBtn.addEventListener("pointerenter", () => {
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        return;
+      }
+
+      const card = document.querySelector(".question-card");
+      const maxX = card.clientWidth - noBtn.offsetWidth - 32;
+      const maxY = card.clientHeight - noBtn.offsetHeight - 32;
+
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${Math.max(16, Math.random() * maxX)}px`;
+      noBtn.style.top = `${Math.max(16, Math.random() * maxY)}px`;
+    });
+
+    noBtn.addEventListener("click", () => {
+      answer.textContent = "That button is clearly still thinking.";
+    });
+  </script>
+</body>
+</html>
